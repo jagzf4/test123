@@ -1,0 +1,197 @@
+<?php
+	
+function skanem_pressroom_menu() {
+  $items['pressroom/ajax'] = array(
+    'title' => 'Pressroom Ajax Call',
+    'page callback' => 'pressroom_ajax_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['pressroom/ajax/location'] = array(
+    'title' => 'Pressroom Ajax With Location Call',
+    'page callback' => 'pressroom_ajax_location_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  /*$items['pressroom/ajax/location/%/%'] = array(
+    'title' => 'Pressroom Ajax With Location Call',
+    'page callback' => 'pressroom_ajax_location_callback2',
+    'access arguments' => array('access content'),
+    'page arguments' => array(1,2),
+    'type' => MENU_NORMAL_ITEM,
+  );*/
+
+  return $items;
+}
+
+function skanem_pressroom_theme(){
+	 $themes = array (
+        'skanem_pressroom_pressroomblock_template' => array(
+        	'variables'=>array('data' => NULL, 'path' => NULL),
+            'template' => 'pressroomblock', // your template file called custompage.tpl.php
+            'path'=>drupal_get_path('theme', 'skanem').'/templates',
+        ),
+    );
+    return $themes;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function skanem_pressroom_block_info() {
+	$blocks = array();
+
+	$blocks['pressroomblock'] = array(
+	  'info' => t('Pressroom Block for pressroom page'),
+	);
+
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function skanem_pressroom_block_view($block_name = '') {
+
+  if ($block_name == 'pressroomblock') {
+    $query = new EntityFieldQuery();
+    $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle','news')
+    ->propertyCondition('status', 1)
+    ->propertyOrderBy('created', 'DESC')
+    ->range(0,2);
+    
+    $result = $query->execute();
+    $nodes = array();
+    if (isset($result['node'])) {
+      $nids = array_keys($result['node']);
+      $nodes = node_load_multiple($nids);
+    }
+
+    $result2 = db_query("SELECT DISTINCT node.created AS node_created, DATE_FORMAT((DATE_ADD('19700101', INTERVAL node.created SECOND) + INTERVAL 0 SECOND), '%Y') AS node_created_year
+      FROM 
+      {node} node
+      WHERE (( (node.type IN  ('news')) ))
+      ORDER BY node_created_year ASC");
+    //echo  "<pre/>"; print_r($nodes); exit;
+    //$resarr = $result2->fetchAll();
+      $resarr = $result2->fetchAllAssoc('created');
+
+    //echo  "<pre/>"; print_r($resarr); exit;
+
+  	$block = array(
+      'subject' => t('Our Team Block'),
+      'content' => theme('skanem_pressroom_pressroomblock_template', array('data' => $nodes,'locations'=>$resarr)),
+    );
+  	
+    //echo "<pre/>"; print_r($block); exit;
+    return $block;
+  }
+
+}
+
+
+function pressroom_ajax_callback(){
+    $year = $_POST['yearid'];
+    $query = new EntityFieldQuery();
+    $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle','news')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_news_date', 'value', $year. '%', 'like')
+    ->propertyOrderBy('created', 'DESC')
+    ->range(0,2);
+    
+    $result = $query->execute();
+    $nodes = array();
+    if (isset($result['node'])) {
+      $nids = array_keys($result['node']);
+      $nodes = node_load_multiple($nids);
+    }
+      
+      foreach ($nodes as $node) {
+      $options = array('absolute' => TRUE);
+      $url = url('node/' . $node->nid, $options);
+      $htmldata = "<div class='medium-4 large-4 one_third columns'>
+                    <div class='news_thumbnil'>
+                    <img data-src='";
+      $htmldata .=  file_create_url($node->field_images['und'][0]['uri']); 
+      $htmldata .="' src='img/loader.gif' />
+                    </div>
+                    <div class='news_para_listing'>
+                    <span class='date_news'>";
+      $htmldata .=  date('F j, Y',$node->created);
+      $htmldata .="</span>
+                          <h2 class='news_title'><a href='";
+      $htmldata .= $url;
+      $htmldata .="'>";
+      $htmldata .=$node->title;
+      $htmldata .="</a></h2>
+                          <div class='clearfix'></div>
+                    </div>
+                  </div>";
+    }
+    echo $htmldata; exit;
+}
+
+function pressroom_ajax_location_callback(){
+    //echo "<pre/>"; print_r($_REQUEST); exit;
+    $index = $_REQUEST['index']*2;
+    $startindex = $index-2;
+
+    if(!empty($_REQUEST['year'])){
+      $query = new EntityFieldQuery();
+      $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle','news')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_news_date', 'value', $year. '%', 'like')
+      ->propertyOrderBy('created', 'DESC')
+      ->range($startindex,$index);
+    }
+    else{
+      $query = new EntityFieldQuery();
+      $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle','news')
+      ->propertyCondition('status', 1)
+      ->propertyOrderBy('created', 'DESC')
+      ->range($startindex,$index);
+    }
+    
+    $result = $query->execute();
+    $nodes = array();
+    if (isset($result['node'])) {
+      $nids = array_keys($result['node']);
+      $nodes = node_load_multiple($nids);
+    }
+      
+      foreach ($nodes as $node) {
+      $options = array('absolute' => TRUE);
+      $url = url('node/' . $node->nid, $options);
+      $htmldata = "<div class='medium-4 large-4 one_third columns'>
+                    <div class='news_thumbnil'>
+                    <img data-src='";
+      $htmldata .=  file_create_url($node->field_images['und'][0]['uri']); 
+      $htmldata .="' src='img/loader.gif' />
+                    </div>
+                    <div class='news_para_listing'>
+                    <span class='date_news'>";
+      $htmldata .=  date('F j, Y',$node->created);
+      $htmldata .="</span>
+                          <h2 class='news_title'><a href='";
+      $htmldata .= $url;
+      $htmldata .="'>";
+      $htmldata .=$node->title;
+      $htmldata .="</a></h2>
+                          <div class='clearfix'></div>
+                    </div>
+                  </div>";
+    }
+    echo $htmldata; exit;
+}
+
+

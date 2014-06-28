@@ -1,0 +1,5 @@
+name =  Pressroom block and Template
+description = Create of pressroom block and template
+package = Skanem
+core = 7.x
+version = 7.x-1.0
