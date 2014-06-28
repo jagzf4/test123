@@ -1,0 +1,6 @@
+name =  User Subscription to List
+description = Updation of user subscription to list
+package = Skanem
+dependencies[] = newsletter
+core = 7.x
+version = 7.x-1.0

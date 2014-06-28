@@ -1,0 +1,126 @@
+<?php
+	
+
+function skanem_subscription_form_newsletter_subscriber_list_alter(&$form, &$form_state, $form_id){
+	//echo "<pre/>"; print_r($form); exit;
+	$list = db_query("SELECT * FROM newsletter_list");
+ 	//var_dump($locations); exit;
+ 	//echo "<pre/>"; print_r($locations); exit;
+ 	$list_arr = array();
+ 	$list_arr['select'] = t('Assign subscribers to list');
+ 	//print_r($row);
+ 	if ($list) 
+	{
+	  foreach($list as $k=>$v)
+	  {
+		$list_arr[$v->nlid] = $v->title;
+	  }
+	}
+
+	 $form['group_subscribe'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Group Subscribe To List'),
+    '#attributes' => array('class' => array('container-inline')),
+    '#weight' => 0,
+  );
+
+	  //$options['delete'] = t('Delete the selected subscribers');
+
+	  $form['group_subscribe']['assignlist'] = array(
+	    '#type' => 'select',
+	    '#title' => t('Operation'),
+	    '#title_display' => 'invisible',
+	    '#options' => $list_arr,
+	  );
+	  $form['group_subscribe']['submit'] = array(
+	    '#type' => 'submit',
+	    '#value' => t('Assign List'),
+	    '#name'=>'subscribesubmit',
+	    '#submit' => array('subscription_form_submit_func'),
+	  );
+
+
+	  $form['group_confirm'] = array(
+	    '#type' => 'fieldset',
+	    '#title' => t('Group Confirm'),
+	    '#attributes' => array('class' => array('container-inline')),
+	    '#weight' => 0,
+	  );
+
+	  $cnfopt['confirm'] = t('Confirm the selected subscribers');
+
+	  $form['group_confirm']['confirmlist'] = array(
+	    '#type' => 'select',
+	    '#title' => t('Operation'),
+	    '#title_display' => 'invisible',
+	    '#options' => $cnfopt,
+	  );
+
+	  $form['group_confirm']['submit'] = array(
+	    '#type' => 'submit',
+	    '#value' => t('Confirm Subscribers'),
+	    '#name'=>'confirmsubmit',
+	    '#submit' => array('confirm_form_submit_func'),
+	  );
+
+}
+
+function subscription_form_submit_func($form, &$form_state) {
+  //echo '<pre/>'; print_r($form_state); exit;	
+  $assignlist = $form_state['input']['assignlist'];
+  $ids = array_filter($form_state['values']['subscriber']);
+
+  if ($ids) {
+    if($assignlist == 'select'){
+    	drupal_set_message(t('Please Select List from select box.'), 'warning');
+    }
+    else{
+    	foreach($ids as $k=>$v){
+	    	$id = db_update('field_data_field_newsletter_list') // Table name no longer needs {}
+				  ->fields(array(
+					  'field_newsletter_list_target_id' =>$assignlist,
+					))
+				  ->condition('entity_id',$v, '=')
+				  ->execute();
+
+			$revid = db_update('field_revision_field_newsletter_list') // Table name no longer needs {}
+					  ->fields(array(
+						  'field_newsletter_list_target_id' =>$assignlist,
+						))
+					  ->condition('entity_id',$v, '=')
+					  ->execute();
+    	}
+    	drupal_set_message(t('Subscriber assign successfully'), 'status');
+    }
+  }
+  else {
+    drupal_set_message(t('Please Select Subscribers to perform action.'), 'warning');
+  }
+}
+
+function confirm_form_submit_func($form, &$form_state) {
+
+	$confirmlist = $form_state['input']['confirmlist'];
+  	$ids = array_filter($form_state['values']['subscriber']);
+
+  	if ($ids) {
+    switch ($confirmlist) {
+      case 'confirm':
+        foreach($ids as $k=>$v){
+	    	$conid = db_update('newsletter_subscriber') // Table name no longer needs {}
+				  ->fields(array(
+					  'confirmed' =>1,
+					))
+				  ->condition('nsid',$v, '=')
+				  ->execute();
+    	}
+        drupal_set_message(t('Subscriber confirmed successfully'), 'status');
+        break;
+    }
+  }
+  else {
+    drupal_set_message(t('Please Select Subscribers to perform an action.'), 'warning');
+  }
+
+}
+

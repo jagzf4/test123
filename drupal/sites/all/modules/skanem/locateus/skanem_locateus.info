@@ -1,0 +1,5 @@
+name =  Locate Us Custom Dropdown
+description = Custom dropdown for locate us form
+package = Skanem
+core = 7.x
+version = 7.x-1.0

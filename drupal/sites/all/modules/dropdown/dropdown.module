@@ -1,0 +1,199 @@
+<?php
+
+function dropdown_block_view($delta = '') 
+{
+  // Create an array that will be returned as our block
+  $block = array();
+
+  switch($delta) {
+  case 'dropdown':
+
+  $block['subject'] = t('');
+
+  $block['content'] = drupal_get_form('dropdown_ajax_dropdown');
+  break;
+}
+ 
+// Finally, we return the $block array.
+return $block;
+}
+
+function dropdown_block_info() {
+  $blocks['dropdown'] = array(
+
+    'info' => t('Dropdown'),
+
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+function dropdown_ajax_dropdown($form, &$form_state) {
+  // Region dropdown list
+  $form['dropdown_ajax_dropdown']['region'] = array(
+    '#title' => t(''),
+    '#type' => 'select',
+    '#options' => _load_region(),
+    '#ajax' => array(
+      'event'=>'change',
+      'callback' =>'dropdown_ajax_dropdown_location',
+      'wrapper' => 'location-wrapper',
+      'progress' => array(
+          'message' => '',
+      ),
+    ),
+  );
+
+  // Wrapper for location dropdown list
+  $form['dropdown_ajax_dropdown']['wrapper'] = array(
+    '#prefix' => '<div id="location-wrapper">',
+    '#suffix' => '</div>',
+  );
+
+  
+
+  // Options for location dropdown list
+  $options = array('Locations');
+  if (isset($form_state['values']['region'])) {
+    drupal_add_js('jQuery(document).ready(function () { console.log("Hello"); });', 'inline');
+    $options = _load_location($form_state['values']['region']);
+  }
+
+  // Region dropdown list
+  $form['dropdown_ajax_dropdown']['wrapper']['location'] = array(
+    '#title' => t(''),
+    '#type' => 'select',
+    '#options' => $options,
+    '#attributes' => array('onchange' => "
+        jQuery(this).attr('disabled','disabled')
+        jQuery('#edit-region').attr('disabled', 'disabled')
+        window.location = jQuery(this).val()+'#ss-chain' 
+       "),
+    /*'#ajax' => array(
+      'event'=>'change',
+      'callback' =>'dropdown_url_change',
+      'wrapper' => 'location-wrapper',
+      'progress' => array(
+          'message' => '',
+      ),
+    ),*/
+  );
+
+  $form['#attached']['js'][] = drupal_get_path('theme', 'skanem') .'/js/dropdown.js' ; 
+
+  return $form;
+}
+
+
+/**
+ * Function for handling ajax request
+ */
+function dropdown_ajax_dropdown_location($form, $form_state) {
+  // Return the dropdown list including the wrapper
+  //drupal_add_js('jQuery(document).ready(function () { alert("Hello!"); });', 'inline');
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => array(
+      ajax_command_replace("#location-wrapper", render($form['dropdown_ajax_dropdown']['wrapper'])),
+      array('command' => 'locationchange'), // This will call the command nameOfCommand we just created in the JS file.
+    )
+  );
+}
+
+
+function dropdown_context_load_alter(&$context) {
+
+  /*$your_custom_requirement = ... Whatever you define ...;
+
+  if ($your_custom_requirement === TRUE) {
+
+    $context['reactions']['block']['blocks']['block-machine-name-here'] = array(
+      'module' => 'module_that_defined_the_block',
+      'delta'  => 'block_delta_name',
+      'region' => 'sidebar_first', // place to sidebar
+      'weight' => '-10', // block weight in the region
+    );
+  }*/
+
+}
+
+/**
+ * Function for populating region
+ */
+function _load_region() {
+  $region = array('Regions');
+
+
+  $query = db_select("taxonomy_term_data", "a");
+
+  $query->fields("a", array('tid', 'name'));
+
+  $query->condition("a.vid",3);
+
+  $query->orderBy("a.weight");
+
+  $result = $query->execute();
+
+  while($row = $result->fetchObject()){
+    $region[$row->tid] = $row->name;
+  }
+
+  return $region;
+}
+
+/**
+ * Function for populating location
+ */
+function _load_location($region_id) {
+
+  try {
+  
+
+  $location = array('Locations');
+
+  $query = db_select(' field_data_field_region_location', 'a');
+   
+  $query->join('node', 't', 't.nid = a.entity_id'); 
+  
+  $query->join('field_data_field_order', 'd', 't.nid = d.entity_id'); 
+
+  $query->condition("a.field_region_location_tid  ",$region_id );
+
+  $query->condition("t.type  ", "location");
+      
+  $query->fields("t", array('nid', 'title'));
+
+  $query->orderBy("d.field_order_value", "ASC");
+     
+  $result = $query->execute();
+
+  while($row = $result->fetchObject()){
+    
+    $location[url('node/'.$row->nid)] = $row->title;
+    
+  }
+}
+//catch exception
+catch(Exception $e) {
+  return 'Message: ' .$e->getMessage(); 
+}
+
+
+  return $location; 
+}
+
+function dropdown_url_change($form, $form_state) {
+  // Return the dropdown list including the wrapper
+  global $base_url;
+
+  $region_id= $form_state['values']['region'];
+  $location_id= $form_state['values']['location'];
+  ctools_include('ajax');
+  ctools_add_js('ajax-responder');
+
+  $commands[] = ctools_ajax_command_redirect('node/'.$location_id);
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+  
+}

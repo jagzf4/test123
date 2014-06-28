@@ -1,0 +1,6 @@
+name = Skanem Admin
+description = This is a sub-theme of theme Seven for backend, made by Rajdatta Sarwade for the web site skanem.com (responsive).
+package = Core
+version = 7.1
+core = 7.x
+base theme = seven

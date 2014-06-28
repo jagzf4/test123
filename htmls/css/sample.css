@@ -1,0 +1,92 @@
+.prose ul li {
+
+}
+
+.subscribe-btn input{
+ 	color: #FFFFFF;
+    font-family: 'Verdana';
+    line-height: 60px;
+    padding-left: 1rem;
+}	
+
+.subscribe-btn .icon{ 
+	background: url("../img/sprites.png") no-repeat scroll -3px -106px rgba(0, 0, 0, 0);
+	float: right;
+	height: 39px;
+	margin-right: 0.6rem;
+	margin-top: 0.6rem;
+	width: 39px;
+}
+
+#simplenews-block-form-1 #edit-submit,#newsletter-manage-subscriptions-form .form-submit{
+	display:none;
+}
+
+input.subscribe-email{
+	background-color: #F6841F !important;;
+}
+
+.footer_wrap .columns a{
+	color: #FFFFFF;
+    list-style-type: none;
+    text-align: left;
+}
+
+.footer_wrap .columns a:hover{
+	  color: #0081C8;
+}
+
+ul.links li, ul.links li a{
+	float:none;
+}
+
+ul.main-menu li,.primary-task li,.secondary-task li,.action-link li{
+	float:left;
+}
+
+.foot_hide .last ul li{
+	margin-left:0;
+}
+
+#block-newsletter-newsletter-subscribe, .field-name-field-newsletter-list{
+	display:none;
+}
+
+.fr{
+	float:right;
+}
+
+.banner-title{line-height:2.5rem;}
+
+ul.primary-task li{
+	float:left;
+	margin-right:10px;
+}
+
+.subscribe-btn .download-file .an_report {
+    font-family: UniversCondensed-Bold;
+    font-size: 1.775rem;
+    padding-left: 0;
+    text-transform: uppercase;
+}
+.subscribe-btn .download-file a {
+    color: #FFFFFF;
+    display: block;
+    font-family: Verdana;
+    font-size: 0.875rem;
+    line-height: 60px;
+    padding-left: 1rem;
+    text-transform: uppercase;
+}
+
+#search-btn{
+	padding-right:6px;
+}
+
+.subscribe-btn a:hover {
+    color: #000000 !important;
+}
+
+.locate-contact-left > span {
+  display: block;
+}

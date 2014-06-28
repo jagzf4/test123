@@ -1,0 +1,115 @@
+<?php
+	
+
+function skanem_ourteam_theme(){
+	 $themes = array (
+        'skanem_ourteam_ourteamblock_template' => array(
+        	'variables'=>array('data' => NULL, 'path' => NULL),
+            'template' => 'ourteamblock', // your template file called custompage.tpl.php
+            'path'=>drupal_get_path('theme', 'skanem').'/templates',
+        ),
+        'skanem_ourteam_ourteamlocateusblock_template' => array(
+        	'variables'=>array('data' => NULL, 'path' => NULL),
+            'template' => 'ourteamlocateusblock', // your template file called custompage.tpl.php
+            'path'=>drupal_get_path('theme', 'skanem').'/templates',
+        ),
+    );
+    return $themes;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function skanem_ourteam_block_info() {
+	$blocks = array();
+
+	$blocks['ourteamblock'] = array(
+	  'info' => t('Our Team Block for our team page'),
+	);
+
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function skanem_ourteam_block_view($block_name = '') {
+
+  if ($block_name == 'ourteamblock') {
+  	$regionarr = _load_region();
+  	$allregionarr = array();
+  	$alllocarr = array();
+    foreach($regionarr as $k=>$v){
+    	if($k!=0){
+
+    		/*$term = taxonomy_get_term($k);
+			// then, use the term object to get the unaliased path
+			$taxonomy_path = taxonomy_term_path($term);
+			// finally, lookup the path alias using drupal_lookup_path()
+			$taxonomy_path_alias = drupal_lookup_path('alias', $taxonomy_path);
+			echo "<pre/>"; print_r($taxonomy_path_alias); exit;*/
+
+    		$alllocarr = _load_location2($k);
+    		unset($alllocarr[0]);
+    		$allregionarr[$v]['locations'] = $alllocarr;
+    	}
+    }
+    $pathname = drupal_get_path_alias(current_path());
+    $list="";
+    //echo "<pre/>"; print_r(); exit;
+    if (strpos($pathname,'locate-us') !== false) {
+	    //echo 'true'; exit;
+	    $block = array(
+	      'subject' => t('Our Team Block'),
+	      'content' => theme('skanem_ourteam_ourteamlocateusblock_template', array('data' => $allregionarr)),
+	    );
+	}
+    else{
+    	$block = array(
+	      'subject' => t('Our Team Block'),
+	      'content' => theme('skanem_ourteam_ourteamblock_template', array('data' => $allregionarr)),
+	    );
+    }
+  	
+    
+    //echo "<pre/>"; print_r($block); exit;
+    return $block;
+  }
+
+}
+
+
+function _load_location2($region_id) {
+
+  $location = array('- Locations -');
+
+  $query = db_select(' field_data_field_region_location', 'a');
+   
+  $query->join('node', 't', 't.nid = a.entity_id'); 
+  
+  $query->join('field_data_field_order', 'd', 't.nid = d.entity_id'); 
+
+  $query->condition("a.field_region_location_tid  ",$region_id );
+
+  $query->condition("t.type  ", "location");
+      
+  $query->fields("t", array('nid', 'title'));
+
+  $query->orderBy("d.field_order_value", "ASC");
+     
+  $result = $query->execute();
+
+  while($row = $result->fetchObject()){
+    
+    $location[$row->nid] = $row->title;
+    
+  }
+
+  return $location;
+  
+}
+
+function skanem_ourteam_form_alter($form, $form_state) {
+    //echo  "<pre/>"; print_r($form_id); exit;
+}
+
