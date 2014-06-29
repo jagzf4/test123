@@ -13,7 +13,12 @@
 <!-- supply chain -->
             <div id="ss-chain" class="container">
                 <div class="medium-16 large-16 column">
-                    <div class="sc_head"><?php echo $content['field_organisation']['#object']->title; ?></div>
+                    <div class="sc_head">
+	                    <?php
+	                      //echo $content['field_organisation']['#object']->title;
+	                      echo $node->title;
+	                    ?>
+                    </div>
                     <div class="row">
                     <?php if(!empty($content['field_contact']['0']['entity']['field_collection_item'][$content['field_contact']['#items'][0]['value']]['field_organisation_name']['#items']['0']['value'])){
                         ?>
@@ -57,7 +62,7 @@
                          <div class="<?php if(!empty($content['field_contact']['0']['entity']['field_collection_item'][$content['field_contact']['#items'][0]['value']]['field_organisation_name']['#items']['0']['value'])){
                         echo "large-11 medium-8"; } else { echo "large-16 medium-16"; }?> column">
                             <div class="<?php if(!empty($content['field_contact']['0']['entity']['field_collection_item'][$content['field_contact']['#items'][0]['value']]['field_organisation_name']['#items']['0']['value'])){
-                        echo "loc-about"; } else { echo "loc_about1"; }?>">
+                        echo "locate-about"; } else { echo "locate-about1"; }?>">
                             <div class="locate-contact"><p>About Us</p></div>
                                 <div class="locate-about-txt">
                                 <?php echo $content['field_about_us']['#items']['0']['value']; ?>

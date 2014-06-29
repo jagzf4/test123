@@ -405,6 +405,7 @@ button, .button_purple{background-color: #9c218b;
 	.locate-contact-right{width:14.375rem; padding: 0.300rem 0 0; float: right; }
 	.locate-contact-right ul li{list-style-type: disc; text-align: left;font-family: verdana; font-size: 0.875rem; line-height: 1.063rem; color: #9b218a; }
 	.locate-about{padding: 0 0 0 1.875rem; border-left: 1px #b9b9b9 solid; min-height: 7.863rem;}
+.locate-about1{padding: 0 0 2rem;}
 	.locate-about-txt{font-family:verdana; font-size: 0.875rem; text-align:left; color: #3d3d3d; padding: 0.300rem 0 0; line-height: 1.063rem;}
 	.locate-about-txt a{color:#0081c8;}
 	.brdr{border-bottom: 1px #b9b9b9 solid;}
