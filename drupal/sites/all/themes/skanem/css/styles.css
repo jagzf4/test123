@@ -516,6 +516,8 @@ button.radius, .button_purple.radius{border-radius:3px;}
 .tc_title_wrap{background:#0081C8;text-align:center;color:#fff;position:relative;margin-bottom:20px;padding:35px 0;}
 .tc_title_wrap h2{font-size:1.875rem;font-family:'UniversCondensed-Bold';text-transform:uppercase;color:#fff;margin-top:0;line-height:100%;margin-bottom:20px;}
 .tc_title_wrap p{font-size:.875rem;line-height:120%;margin:0;text-align:center;}
+.tc_title_wrap p a, .tc_title_wrap p a:hover,
+.pp_title_wrap p a, .pp_title_wrap p a:hover,{color: #9C218B;}
 
 
 /*careers*/

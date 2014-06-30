@@ -405,7 +405,7 @@ button, .button_purple{background-color: #9c218b;
 	.locate-contact-right{width:14.375rem; padding: 0.300rem 0 0; float: right; }
 	.locate-contact-right ul li{list-style-type: disc; text-align: left;font-family: verdana; font-size: 0.875rem; line-height: 1.063rem; color: #9b218a; }
 	.locate-about{padding: 0 0 0 1.875rem; border-left: 1px #b9b9b9 solid; min-height: 7.863rem;}
-.locate-about1{padding: 0 0 2rem;}
+	.locate-about1{padding: 0 0 2rem;}
 	.locate-about-txt{font-family:verdana; font-size: 0.875rem; text-align:left; color: #3d3d3d; padding: 0.300rem 0 0; line-height: 1.063rem;}
 	.locate-about-txt a{color:#0081c8;}
 	.brdr{border-bottom: 1px #b9b9b9 solid;}
@@ -516,6 +516,8 @@ button, .button_purple{background-color: #9c218b;
 .tc_title_wrap{background:#0081C8;text-align:center;color:#fff;position:relative;margin-bottom:20px;padding:35px 0;}
 .tc_title_wrap h2{font-size:1.875rem;font-family:'UniversCondensed-Bold';text-transform:uppercase;color:#fff;margin-top:0;line-height:100%;margin-bottom:20px;}
 .tc_title_wrap p{font-size:.875rem;line-height:120%;margin:0;text-align:center;}
+.tc_title_wrap p a, .tc_title_wrap p a:hover,
+.pp_title_wrap p a, .pp_title_wrap p a:hover,{color: #9C218B;}
 
 
 /*careers*/
@@ -717,6 +719,6 @@ ul#small_acc li a.active > span{background-image: url('../img/small_dwn_arrow.pn
 .org_text p{font-size:1.2rem;color:#0081c8;font-family:UniversCondensed;line-height:1.2rem;}
 .org_text p i{font-size:1.250rem;color:#0081c8;font-family:UniversCondensed;line-height:1.5rem;}
 
-.search-img{width: 9.000rem; float: left;}
-.search-txt{padding:0 0 0 1.250rem; line-height: 1.063rem; font-family: verdana; font-size: 0.875rem; color: #3d3d3d; float: left; width:69rem }
-.srch_list{ min-height: 6.625rem; margin-bottom: 1.7rem; border-bottom:1px solid #7e7b7b}
+.search-img{width: 9.000rem; float: left; margin-right: 1.25rem;}
+.search-txt{line-height: 1.063rem; font-family: verdana; font-size: 0.875rem; color: #3d3d3d; width:69rem }
+.srch_list{ min-height: 6.625rem; margin-bottom: 1.7rem; border-bottom:1px solid #7e7b7b;padding-bottom: 3rem;}

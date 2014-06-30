@@ -106,3 +106,16 @@ form {
 #block-system-main .links{
  margin: 30px 30px 50px;   
 }
+
+.links.primary-task {
+	background: none repeat scroll 0 0 #000;
+	left: 0;
+	margin: 0;
+	padding: 10px;
+	position: fixed;
+	top: 130px;
+	z-index: 999;
+}
+.links.primary-task li {
+	list-style: none outside none;
+}

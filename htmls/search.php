@@ -63,7 +63,7 @@
                         <div class="medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-img"><img src="img/srch-img.jpg" /></div>
                                 <div class="search-txt">
@@ -78,7 +78,7 @@
                         <div class=" medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-img"><img src="img/srch-img.jpg" /></div>
                                 <div class="search-txt">
@@ -92,7 +92,7 @@
                         <div class=" medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-txt">
                                     <span>We offer labelling solutions across different categories including the Food, Beverage, Personal Care, Home Care, Automotive, Industrial and Pharmaceutical industries.</span>
@@ -105,7 +105,7 @@
                         <div class=" medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-img"><img src="img/srch-img.jpg" /></div>
                                 <div class="search-txt">
@@ -119,7 +119,7 @@
                         <div class=" medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-img"><img src="img/srch-img.jpg" /></div>
                                 <div class="search-txt">
@@ -133,7 +133,7 @@
                         <div class=" medium-16 large-16 column">
                             <div class="srch_list">
                                 <div class="org_text">
-                                     <h3>Locate Us</h3>
+                                     <h3><a href="#">Locate Us</a></h3>
                                 </div>
                                 <div class="search-img"><img src="img/srch-img.jpg" /></div>
                                 <div class="search-txt">
